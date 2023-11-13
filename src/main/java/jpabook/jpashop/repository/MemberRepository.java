@@ -2,6 +2,7 @@ package jpabook.jpashop.repository;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -9,11 +10,13 @@ import jpabook.jpashop.domain.Member;
 import lombok.RequiredArgsConstructor;
 
 @Repository
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberRepository {
     
     private final EntityManager em;
 
+    @Transactional
     public void save(Member member){
         em.persist(member);
     }
