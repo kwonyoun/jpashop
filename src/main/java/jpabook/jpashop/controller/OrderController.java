@@ -5,10 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import jpabook.jpashop.domain.Member;
+import jpabook.jpashop.domain.Order;
+import jpabook.jpashop.domain.OrderSearch;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.service.ItemService;
 import jpabook.jpashop.service.MemberService;
@@ -40,4 +44,23 @@ public class OrderController {
         orderService.order(memberId, itemId, count);
         return "redirect:/orders";
     }
+
+    @GetMapping("/orders")
+    public String orderList(@ModelAttribute("orderSearch") OrderSearch orderSearch, Model model) {
+        List<Order> orders = orderService.findOrders(orderSearch);
+        model.addAttribute("orders", orders);
+        /*
+         * @ModelAttribute("orderSearch") 처럼 세팅해두면 자동으로 model.attribute 박스에 자동으로 담긴다. 
+         * model.addAttribute("orderSearch", orderSearch); 이 코드가 생략되어있다는 말이다.
+         */
+        return "order/orderList";
+    }
+
+    @PostMapping("orders/{orderId}/cancel")
+    public String cancel(@PathVariable("orderId") Long orderId)
+    {
+        orderService.cancelOrder(orderId);
+        return "redirect:/orders";
+    }
+    
 }

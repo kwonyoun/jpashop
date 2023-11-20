@@ -10,6 +10,7 @@ import jpabook.jpashop.domain.DeliveryStatus;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.OrderSearch;
 import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.domain.item.Item;
 import jpabook.jpashop.repository.ItemRepository;
@@ -70,9 +71,9 @@ public class OrderService {
     }
 
     // //검색
-    // @Transactional
-    // public List<Order> findOrders(OrderSearch OrderSearch){
-    //     return orderRepository.findAll(OrderSearch);
-    // }
+    @Transactional
+    public List<Order> findOrders(OrderSearch OrderSearch){
+        return orderRepository.findAllByString(OrderSearch);
+    }
 
 }
